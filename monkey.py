@@ -4,6 +4,9 @@ import tkinter.ttk as ttk
 CANVAS_WIDTH = 800
 CANVAS_HEIGHT = 500
 
+UPDATE_DELAY = 33
+
+
 class Sprite():
 
     def __init__(self, canvas, image_filename, x=0, y=0):
@@ -18,6 +21,12 @@ class Sprite():
         self.photo_image = tk.PhotoImage(file=self.image_filename)
         self.canvas_object_id = self.canvas.create_image(self.x, self.y, image=self.photo_image)
 
+    def render(self):
+        self.canvas.coords(self.canvas_object_id, self.x, self.y)
+
+    def update(self):
+        pass
+
 
 class MonkeyGame(ttk.Frame):
 
@@ -25,7 +34,7 @@ class MonkeyGame(ttk.Frame):
         super().__init__(parent)
         self.grid(sticky="NEWS")
         self.create_widgets()
-        
+
         self.create_sprite()
 
     def create_widgets(self):
@@ -34,8 +43,20 @@ class MonkeyGame(ttk.Frame):
         self.canvas.grid(sticky='NEWS')
 
     def create_sprite(self):
-        self.banana = Sprite(self.canvas, "Banana2.png", 100, 100)
+        self.banana = Banana(self.canvas, "Banana2.png", 100, 100)
 
+    def animate(self):
+        self.banana.update()
+        self.banana.render()
+        self.after(UPDATE_DELAY, self.animate)
+
+    def start(self):
+        self.after(0, self.animate)
+
+
+class Banana(Sprite):
+    def update(self):
+        self.x += 5
 
 
 if __name__ == "__main__":
@@ -44,5 +65,6 @@ if __name__ == "__main__":
 
     root.resizable(False, False)
     app = MonkeyGame(root)
+    app.start()
     root.mainloop()
 

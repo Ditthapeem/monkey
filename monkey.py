@@ -32,38 +32,51 @@ class Sprite():
         pass
 
 
-class MonkeyGame(ttk.Frame):
+class GameApp(ttk.Frame):
 
     def __init__(self, parent):
         super().__init__(parent)
         self.grid(sticky="NEWS")
-        self.create_widgets()
+        self.create_canvas()
 
-        self.create_sprite()
+        self.sprite = []
+        self.init_game()
 
-    def create_widgets(self):
+    def create_canvas(self):
         self.canvas = tk.Canvas(self, borderwidth=0, width=CANVAS_WIDTH,
                                 height=CANVAS_HEIGHT, highlightthickness=0)
         self.canvas.grid(sticky='NEWS')
 
-    def create_sprite(self):
-        self.banana = Banana(self.canvas, "Banana2.png", 100, 100)
-        self.banana.set_speed(15, 25)
-
     def animate(self):
-        self.banana.update()
-        self.banana.render()
+        for sprite in self.sprite:
+            sprite.update()
+            sprite.render()
+
         self.after(UPDATE_DELAY, self.animate)
 
     def start(self):
         self.after(0, self.animate)
+
+    def init_game(self):
+        pass
+
+
+class MonkeyGame(GameApp):
+    def create_sprite(self):
+        self.banana = Banana(self.canvas, "Banana2.png", 100, 400)
+        self.banana.set_speed(15, 25)
+
+    def init_game(self):
+        self.create_sprite()
+        self.sprite.append(self.banana)
+
 
 
 class Banana(Sprite):
     def init_sprite(self):
         self.vx = 0
         self.vy = 0
-        
+
     def set_speed(self, vx, vy):
         self.vx = vx
         self.vy = vy

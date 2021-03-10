@@ -17,7 +17,7 @@ class MonkeyGame(ttk.Frame):
                                 height=CANVAS_HEIGHT, highlightthickness=0)
         self.canvas.grid(sticky='NEWS')
 
-        self.banana_image = tk.PhotoImage(file='banana.png')
+        self.banana_image = tk.PhotoImage(file=r'C:/Work/Ske Sem2 2564/Computer Programming II 01219116/Lesson/Week 7/monkey/Banana2.png')
         self.banana = self.canvas.create_image(100, 100, image=self.banana_image)
 
 if __name__ == "__main__":

@@ -3,28 +3,41 @@ import tkinter.ttk as ttk
 
 
 class Sprite():
-
         def __init__(self, game_app, image_filename, x=0, y=0):
             self.image_filename = image_filename
             self.x = x
             self.y = y
             self.canvas = game_app.canvas
 
+            self.visible = True
+
             self.init_canvas_object()
             self.init_sprite()
 
-        def init_sprite(self):
-            pass
+
 
         def init_canvas_object(self):
             self.photo_image = tk.PhotoImage(file=self.image_filename)
             self.canvas_object_id = self.canvas.create_image(self.x, self.y, image=self.photo_image)
 
         def render(self):
-            self.canvas.coords(self.canvas_object_id, self.x, self.y)
+            if self.visible:
+                self.canvas.coords(self.canvas_object_id, self.x, self.y)
 
         def update(self):
             pass
+
+        def show(self):
+            self.visible = True
+            self.canvas.itemconfigure(self.canvas_object_id, state="normal")
+
+        def hide(self):
+            self.visible = False
+            self.canvas.itemconfigure(self.canvas_object_id, state="hidden")
+
+        def init_sprite(self):
+            pass
+
 
 class GameApp(ttk.Frame):
 

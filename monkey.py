@@ -57,11 +57,11 @@ class Banana(Sprite):
 
 
 class MonkeyGame(GameApp):
-
-    class SpeedAdjustmentObserver:
+    class AppObserver:
         def __init__(self, app):
             self.app = app
 
+    class SpeedAdjustmentObserver(AppObserver):
         def notify(self, event):
             app = self.app
             if event.char == "+":
@@ -73,10 +73,7 @@ class MonkeyGame(GameApp):
                     app.speed -=1
                     app.update_speed_text()
 
-    class BananaAdjustmentObserver:
-        def __init__(self, app):
-            self.app = app
-
+    class BananaAdjustmentObserver(AppObserver):
         def notify(self, event):
             app = self.app
             if event.char == " ":

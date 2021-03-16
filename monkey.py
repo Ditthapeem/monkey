@@ -8,6 +8,7 @@ CANVAS_HEIGHT = 500
 UPDATE_DELAY = 33
 GRAVITY = 1
 
+
 class Banana(Sprite):
     def init_sprite(self):
         self.vx = 0
@@ -75,8 +76,6 @@ class MonkeyGame(GameApp):
             if not self.banana.is_moving:
                 self.banana.reset()
                 self.banana.start()
-
-
 
 if __name__ == "__main__":
     root = tk.Tk()

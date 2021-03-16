@@ -57,6 +57,35 @@ class Banana(Sprite):
 
 
 class MonkeyGame(GameApp):
+
+    class SpeedAdjustmentObserver:
+        def __init__(self, app):
+            self.app = app
+
+        def notify(self, event):
+            app = self.app
+            if event.char == "+":
+                if app.speed < 10:
+                    app.speed +=1
+                    app.update_speed_text()
+            if event.char == "-":
+                if app.speed > 1:
+                    app.speed -=1
+                    app.update_speed_text()
+
+    class BananaAdjustmentObserver:
+        def __init__(self, app):
+            self.app = app
+
+        def notify(self, event):
+            app = self.app
+            if event.char == " ":
+                if not app.banana.is_moving:
+                    app.banana.set_speed(3 * app.speed, 5 * app.speed)
+                    app.banana.reset()
+                    app.banana.start()
+
+
     def create_sprite(self):
         self.banana = Banana(self, "Banana.png", 100, 400)
         self.banana.set_speed(15, 25)
@@ -80,20 +109,8 @@ class MonkeyGame(GameApp):
         self.speed = 3
         self.update_speed_text()
 
-    def on_key_pressed(self, event):
-        if event.char == " ":
-            if not self.banana.is_moving:
-                self.banana.set_speed(3 * self.speed, 5 * self.speed)
-                self.banana.reset()
-                self.banana.start()
-        if event.char == "+":
-            if self.speed < 10:
-                self.speed +=1
-                self.update_speed_text()
-        if event.char == "-":
-            if self.speed > 1:
-                self.speed -=1
-                self.update_speed_text()
+        self.register_on_key_pressed_observer(MonkeyGame.SpeedAdjustmentObserver(self))
+        self.register_on_key_pressed_observer(MonkeyGame.BananaAdjustmentObserver(self))
 
 if __name__ == "__main__":
     root = tk.Tk()

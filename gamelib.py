@@ -97,6 +97,8 @@ class GameApp(ttk.Frame):
         self.create_canvas()
 
         self.sprite = []
+        self.on_key_pressed_observers = []
+
         self.init_game()
 
         self.parent.bind("<KeyPress>", self.on_key_pressed)
@@ -120,8 +122,12 @@ class GameApp(ttk.Frame):
     def init_game(self):
         pass
 
+    def register_on_key_pressed_observer(self, observer):
+        self.on_key_pressed_observers.append(observer)
+
     def on_key_pressed(self, event):
-        pass
+        for observer in self.on_key_pressed_observers:
+            observer.notify(event)
 
     def on_key_released(self, event):
         pass

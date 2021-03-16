@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from gamelib import Sprite, GameApp
+from gamelib import Sprite, GameApp, Text
 
 CANVAS_WIDTH = 800
 CANVAS_HEIGHT = 500
@@ -64,18 +64,35 @@ class MonkeyGame(GameApp):
         self.monkey = Sprite(self, 'gollira.png', 100, 400)
         self.other_monkey = Sprite(self, 'gollira.png', 700, 400)
 
+        self.speed_text = Text(self, 'Speed: XX', 40, 20)
+
         self.sprite.append(self.banana)
         self.sprite.append(self.monkey)
         self.sprite.append(self.other_monkey)
+        self.sprite.append(self.speed_text)
+
+    def update_speed_text(self):
+        self.speed_text.set_text(f"Speed: {self.speed}")
 
     def init_game(self):
         self.create_sprite()
+
+        self.speed = 3
+        self.update_speed_text()
 
     def on_key_pressed(self, event):
         if event.char == " ":
             if not self.banana.is_moving:
                 self.banana.reset()
                 self.banana.start()
+        if event.char == "+":
+            if self.speed < 10:
+                self.speed +=1
+                self.update_speed_text()
+        if event.char == "-":
+            if self.speed > 1:
+                self.speed -=1
+                self.update_speed_text()
 
 if __name__ == "__main__":
     root = tk.Tk()
